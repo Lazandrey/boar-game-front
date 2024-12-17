@@ -1,0 +1,40 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: calc(100vh - 8rem);
+  background-color: rgb(216, 159, 86);
+  padding-top: 1rem;
+}
+.card {
+  width: 100%;
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 0.5rem 0.3rem;
+}
+.gameInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+.imageWrapper {
+  width: 40rem;
+  height: 35rem;
+  position: relative;
+}
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  /* object-fit: contain; */
+}
