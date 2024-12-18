@@ -20,8 +20,6 @@ const Header = () => {
         cookie.get("userEmail")!
       );
     }
-
-    console.log("userContext", userContext);
   }, []);
 
   const logout = () => {

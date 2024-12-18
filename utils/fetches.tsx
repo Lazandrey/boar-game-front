@@ -27,7 +27,7 @@ export const GetGames = async ({
     setFilteredGamesQty(response.data.count);
   } catch (error: unknown) {
     const errorResponse = error as AxiosError;
-    console.error("status", errorResponse.status);
+
     if (errorResponse.status !== undefined) {
       setFetchError(errorResponse.status);
     } else {

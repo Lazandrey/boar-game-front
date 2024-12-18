@@ -16,7 +16,11 @@ const About = () => {
       <h3>{isOpen.toString()}</h3>
       <button onClick={() => openModal()}>Open Modal</button>
       {isOpen && (
-        <LoginModal text={"Some text"} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <LoginModal
+          text={"Please login"}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       )}
     </div>
   );

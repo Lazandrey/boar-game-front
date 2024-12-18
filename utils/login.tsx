@@ -22,7 +22,6 @@ export const UserLogin = async (
       loginData
     );
 
-    console.log(response);
     if (response.status === 200) {
       cookie.set("authToken", response.data.token);
       cookie.set("userEmail", loginData.email);

@@ -23,6 +23,7 @@ const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
 
       if (User.responseStatus === 200) {
         userContext.SetUserContext(true, User.username, email);
+
         setIsOpen(false);
       }
     } catch (error) {
@@ -38,6 +39,7 @@ const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
       <dialog className={styles.wrapper}>
         <h3>Login</h3>
         <p>{text}</p>
+        <p>isOpen: {isOpen.toString()}</p>
         <input
           type="email"
           placeholder="Email"

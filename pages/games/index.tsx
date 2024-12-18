@@ -46,24 +46,26 @@ const Main = () => {
         (currentPage - 1) * (gamesOnPage === "All" ? 1 : gamesOnPage);
 
       const offset = gamesOnPage === "All" ? 1 : gamesOnPage;
-      GetGames({
-        gameSearchProps: {
-          title: searchTitle,
-          sortField,
-          startIndex: startIndex,
-          offset: offset,
-        },
-        setGames,
-        setFilteredGamesQty,
-        setFetchError,
-      });
+      if (!showLoginModal) {
+        GetGames({
+          gameSearchProps: {
+            title: searchTitle,
+            sortField,
+            startIndex: startIndex,
+            offset: offset,
+          },
+          setGames,
+          setFilteredGamesQty,
+          setFetchError,
+        });
+      }
     }
+
     if (fetchError) {
       if (fetchError === 401) {
-        userContext.SetUserContext(false);
         setShowLoginModal(true);
         setFetchError(null);
-        console.log("fetchError", fetchError);
+        userContext.SetUserContext(false);
       }
     }
   }, [
@@ -74,6 +76,7 @@ const Main = () => {
     router,
     fetchError,
     userContext,
+    showLoginModal,
   ]);
 
   useEffect(() => {
