@@ -1,4 +1,5 @@
 .wrapper {
+  z-index: 100;
   height: 20rem;
   width: 30rem;
   position: absolute;

@@ -60,12 +60,10 @@ const Main = () => {
     }
     if (fetchError) {
       if (fetchError === 401) {
-        // cookie.remove("authToken");
         userContext.SetUserContext(false);
         setShowLoginModal(true);
         setFetchError(null);
         console.log("fetchError", fetchError);
-        // router.push("/login");
       }
     }
   }, [
@@ -88,13 +86,6 @@ const Main = () => {
 
   return (
     <div className={styles.main}>
-      {showLoginModal && (
-        <LoginModal
-          text={"Some text"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
-        />
-      )}
       <SearchInput
         setSearchTitle={setSearchTitle}
         foundGamesQty={filteredGamesQty}
@@ -109,6 +100,13 @@ const Main = () => {
         totalPages={totalPages}
         gamesOnPage={gamesOnPage}
       />
+      {showLoginModal && (
+        <LoginModal
+          text={"Some text"}
+          isOpen={showLoginModal}
+          setIsOpen={setShowLoginModal}
+        />
+      )}
       {games ? <Cards games={games} /> : <Spinner />}
       <GamesNavigation
         currentPage={currentPage}

@@ -1,26 +1,23 @@
 import React, { useState } from "react";
-import axios from "axios";
-import cookie from "js-cookie";
 
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import { GetUserContext } from "@/components/Context";
+import { UserLogin } from "@/utils/login";
 
 const LoginForm = () => {
   const router = useRouter();
   const userContext = GetUserContext();
+
   const OnLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3002/user/login", {
-        email,
-        password,
-      });
-      if (response.status === 200) {
-        cookie.set("authToken", response.data.token);
-        userContext.SetUserContext(true, response.data.userName, email);
+      const User = await UserLogin({ email, password });
+      console.log(User);
+
+      if (User.responseStatus === 200) {
+        userContext.SetUserContext(true, User.username, email);
         router.push("/");
       }
-      console.log(response.data.userName);
     } catch (error) {
       console.error(error);
     }

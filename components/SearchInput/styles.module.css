@@ -1,32 +1,33 @@
 .main {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: 0.3rem 1rem;
-  gap: 1rem;
+  gap: 0.3rem;
 }
 
 .main input {
   height: 3rem;
-  width: 25rem;
-  font-size: 1.5rem;
+  width: 20em;
+  font-size: 1rem;
 }
 .sortSelect {
   height: 3rem;
-  width: 20rem;
-  font-size: 1.5rem;
+  width: 15rem;
+  font-size: 1rem;
 }
 .main p {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .pagesSelect {
   height: 3rem;
   width: 5rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .main label {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }

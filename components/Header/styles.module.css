@@ -6,16 +6,105 @@
   align-items: center;
   padding: 0 2rem;
 }
-.header nav ul {
+.desktopNav ul {
   display: flex;
   flex-direction: row;
   gap: 1rem;
   list-style: none;
 }
 
+.desktopNav {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  list-style: none;
+}
 .user {
   display: flex;
   gap: 1rem;
   align-items: center;
   font-size: 1.5rem;
+}
+
+.burgerBtn {
+  display: none;
+  position: relative;
+  background-color: bisque;
+  height: 4rem;
+  width: 4rem;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.burgerMenuOverlay {
+  position: fixed;
+  top: -100rem;
+  left: 0;
+
+  background-color: bisque;
+  opacity: 0.8;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.5rem 2rem;
+  transition: all 0.5s ease-in-out;
+}
+
+.burgerMenuOverlayOpen {
+  top: 5rem;
+}
+
+.mobileNav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+}
+.mobileNav ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.3rem;
+}
+.userMenuOverlay {
+  position: fixed;
+  top: -100rem;
+  right: 1rem;
+
+  background-color: bisque;
+  opacity: 0.8;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.5rem 2rem;
+  transition: all 0.5s ease-in-out;
+}
+.userMenuOverlay ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+}
+.userMenuOverlay ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.3rem;
+}
+
+.userMenuOverlayOpen {
+  top: 5rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .burgerBtn {
+    display: block;
+  }
+
+  .desktopNav {
+    display: none;
+  }
+  .header {
+    position: sticky;
+    top: 0px;
+    z-index: 100;
+  }
 }

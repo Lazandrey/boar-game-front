@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
-import cookie from "js-cookie";
+
 import styles from "./styles.module.css";
 import { GetUserContext } from "../Context";
+import { UserLogin } from "@/utils/login";
 
 export type ModalProps = {
   text: string;
@@ -15,25 +15,21 @@ const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
   };
 
   const userContext = GetUserContext();
+
   const OnLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3002/user/login", {
-        email,
-        password,
-      });
-      console.log(response);
-      if (response.status === 200) {
-        cookie.set("authToken", response.data.token);
-        userContext.SetUserContext(true, response.data.userName, email);
+      const User = await UserLogin({ email, password });
+      console.log(User);
 
-        console.log(response.data.userName);
+      if (User.responseStatus === 200) {
+        userContext.SetUserContext(true, User.username, email);
         setIsOpen(false);
-        console.log("close");
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
