@@ -1,6 +1,8 @@
 .header {
   height: 5rem;
-  background-color: bisque;
+  /* background-color: bisque; */
+  background-color: var(--color-header-bg);
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,7 +78,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   padding: 0.5rem 2rem;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .userMenuOverlay ul {
   display: flex;

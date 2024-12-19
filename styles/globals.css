@@ -1,3 +1,17 @@
+:root {
+  --color-bg: #373b3c;
+  --color-text: #ffffff;
+  --color-primary: #3e4849;
+  --color-secondary: #687d78;
+  --color-header-bg: #87998d;
+  --color-neon-fill: #e5af89;
+  --color-btn-bg: #e3ceaf;
+  --color-neon-glow: none;
+}
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
 * {
   box-sizing: border-box;
   padding: 0;

@@ -46,6 +46,7 @@ const Main = () => {
         (currentPage - 1) * (gamesOnPage === "All" ? 1 : gamesOnPage);
 
       const offset = gamesOnPage === "All" ? 1 : gamesOnPage;
+      console.log("showLoginModal", showLoginModal);
       if (!showLoginModal) {
         GetGames({
           gameSearchProps: {
@@ -58,6 +59,7 @@ const Main = () => {
           setFilteredGamesQty,
           setFetchError,
         });
+        console.log("getgames");
       }
     }
 

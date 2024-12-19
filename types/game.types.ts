@@ -28,3 +28,43 @@ export type GetGamesType = {
   setFilteredGamesQty: (filteredGamesQty: number) => void;
   setFetchError: (fetchError: number | null) => void;
 };
+
+export type GetGameType = {
+  id: string;
+  setGame: (game: GameType) => void;
+  setFetchError: (fetchError: number | null) => void;
+};
+
+export type EventType = {
+  id: string;
+  host: { name: string; _id: string };
+  game: GameType;
+  number_persons: number;
+  date_time: Date;
+  description: string;
+  price: number;
+  accepted_persons_ids: {
+    user: { name: string; _id: string };
+    user_id: string;
+    addedAt: Date;
+  }[];
+  isCanceled: boolean;
+  address: { street: string; city: string; country: string };
+};
+
+export type GetEventType = {
+  id: string;
+  setEvent: (event: EventType) => void;
+  setFetchError: (fetchError: number | null) => void;
+};
+export type GetEventsType = {
+  gameTitle: string;
+  setEvents: (events: EventType[]) => void;
+  setFetchError: (fetchError: number | null) => void;
+};
+
+export type UserType = {
+  id: string;
+  name: string;
+  email: string;
+};

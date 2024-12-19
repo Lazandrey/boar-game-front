@@ -21,8 +21,7 @@
   text-decoration: none;
   display: inline-block;
   padding: 8px 16px;
-  background-color: #04aa6d;
-  color: white;
+  background-color: var(--color-btn-bg);
 }
 
 .main button:hover {

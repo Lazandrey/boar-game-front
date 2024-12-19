@@ -1,35 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import axios from "axios";
 
 import styles from "./styles.module.css";
 
 import { GameType } from "../../types/game.types";
 import BackButton from "../../components/BackButton/BackButton";
 import Spinner from "../../components/Spinner/Spinner";
+import { GetGameById } from "@/utils/fetches";
+import { GetUserContext } from "@/components/Context";
+import LoginModal from "../../components/LoginModal/LoginModal";
 
 const Game = () => {
   const router = useRouter();
+  const userContext = GetUserContext();
   const { id } = router.query;
-  const [game, setGame] = React.useState<GameType | null>(null);
-  useEffect(() => {
-    try {
-      const GetGameById = async (id: string) => {
-        const response = await axios.get(`http://localhost:3002/game/${id}`);
+  const [game, setGame] = useState<GameType | null>(null);
+  const [fetchError, setFetchError] = useState<number | null>(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
-        setGame(response.data.game);
-      };
-      if (id !== undefined && id !== null) {
-        GetGameById(id as string);
+  useEffect(() => {
+    if (id !== undefined && id !== null) {
+      if (!showLoginModal) {
+        GetGameById({ id: id as string, setGame, setFetchError });
       }
-    } catch (error) {
-      console.error(error);
+
+      if (fetchError) {
+        if (fetchError === 401) {
+          setShowLoginModal(true);
+          setFetchError(null);
+          userContext.SetUserContext(false);
+        }
+      }
     }
-  }, [id, game]);
+  }, [id, showLoginModal, fetchError, userContext]);
 
   return (
     <>
+      {showLoginModal && (
+        <LoginModal
+          text={"Please login"}
+          isOpen={showLoginModal}
+          setIsOpen={setShowLoginModal}
+        />
+      )}
       {game ? (
         <div className={styles.card}>
           <h1>{game?.title}</h1>

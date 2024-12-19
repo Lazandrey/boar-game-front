@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import styles from "./styles.module.css";
 import { GetUserContext } from "../Context";
-import { UserLogin } from "@/utils/login";
+import { UserLogin } from "@/utils/fetches";
 
 export type ModalProps = {
   text: string;

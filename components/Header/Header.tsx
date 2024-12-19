@@ -35,6 +35,9 @@ const Header = () => {
         <Link href="/">Home</Link>
       </li>
       <li>
+        <Link href="/events">Events</Link>
+      </li>
+      <li>
         <Link href="/games">Games</Link>
       </li>
       <li>
@@ -78,6 +81,9 @@ const Header = () => {
           onClick={() => setUserMenuOpen(false)}
         >
           <ul>
+            <li>
+              <Link href="/userevents">Your events</Link>
+            </li>
             <li>
               <Link href="/profile">Profile</Link>
             </li>

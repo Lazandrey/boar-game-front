@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import { GetUserContext } from "@/components/Context";
-import { UserLogin } from "@/utils/login";
+import { UserLogin } from "@/utils/fetches";
 
 const LoginForm = () => {
   const router = useRouter();
