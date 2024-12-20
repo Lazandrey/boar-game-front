@@ -63,6 +63,21 @@ export type GetEventsType = {
   setFetchError: (fetchError: number | null) => void;
 };
 
+export type EventRegisterType = {
+  eventId: string;
+  setFetchResponce: (fetchResponce: string | null) => void;
+  setFetchError: (fetchError: number | null) => void;
+  setIsRegistered: (isRegistered: string) => void;
+  setIsShowAddUserButton: (isShowAddUserButton: boolean) => void;
+};
+
+export type IsUserRegisteredType = {
+  eventId: string;
+  setIsRegistered: (isRegistered: string) => void;
+  setFetchError: (fetchError: number | null) => void;
+  setIsShowAddUserButton: (isShowAddUserButton: boolean) => void;
+};
+
 export type UserType = {
   id: string;
   name: string;

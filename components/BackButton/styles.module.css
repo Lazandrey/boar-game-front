@@ -2,7 +2,8 @@
   color: #fff;
   padding: 15px 25px;
   border-radius: 100px;
-  background-color: #4c43cd;
+  /* background-color: #4c43cd; */
+  background-color: var(--color-btn-bg);
   background-image: radial-gradient(
       93% 87% at 87% 89%,
       rgba(0, 0, 0, 0.23) 0%,

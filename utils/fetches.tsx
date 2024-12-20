@@ -1,13 +1,121 @@
 import axios, { AxiosError } from "axios";
 import cookie from "js-cookie";
 import {
+  EventRegisterType,
   GetEventsType,
   GetEventType,
   GetGamesType,
   GetGameType,
+  IsUserRegisteredType,
 } from "@/types/game.types";
 const hostAddress = `http://localhost:3002`;
 
+export const CancelRegistrationToEvent = async ({
+  eventId,
+  setFetchResponce,
+  setFetchError,
+  setIsRegistered,
+}: EventRegisterType) => {
+  try {
+    const headers = {
+      authorization: cookie.get("authToken"),
+    };
+    const response = await axios.post(
+      `${hostAddress}/event/${eventId}/decline`,
+      {},
+      {
+        headers,
+      }
+    );
+
+    if (response.status === 200) {
+      setIsRegistered("");
+    }
+    setFetchResponce(response.data.message);
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+
+    if (errorResponse.status !== undefined) {
+      setFetchError(errorResponse.status);
+    } else {
+      setFetchError(null);
+    }
+  }
+};
+
+export const RegisterToEvent = async ({
+  eventId,
+  setFetchResponce,
+  setFetchError,
+  setIsRegistered,
+  setIsShowAddUserButton,
+}: EventRegisterType) => {
+  try {
+    const headers = {
+      authorization: cookie.get("authToken"),
+    };
+    const response = await axios.post(
+      `${hostAddress}/event/${eventId}/accept`,
+      {},
+      {
+        headers,
+      }
+    );
+
+    if (response.status === 200) {
+      setIsRegistered(response.data.user._id);
+      setIsShowAddUserButton(false);
+    }
+
+    setFetchResponce(response.data);
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+
+    if (errorResponse.status !== undefined) {
+      setFetchError(errorResponse.status);
+    } else {
+      setFetchError(null);
+    }
+  }
+};
+
+export const isUserRegisteredtoEvent = async ({
+  eventId,
+  setIsRegistered,
+  setFetchError,
+  setIsShowAddUserButton,
+}: IsUserRegisteredType) => {
+  try {
+    const headers = {
+      authorization: cookie.get("authToken"),
+    };
+    const response = await axios.get(
+      `${hostAddress}/event/${eventId}/checkuser`,
+      {
+        headers,
+      }
+    );
+
+    if (response.data.message) {
+      setIsRegistered(response.data.userid);
+      setIsShowAddUserButton(false);
+    } else {
+      setIsShowAddUserButton(true);
+    }
+    setFetchError(null);
+    return response.data.message;
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+
+    if (errorResponse.status !== undefined) {
+      setFetchError(errorResponse.status);
+      // console.log("fetch error", errorResponse);
+    } else {
+      setFetchError(null);
+      console.log("fetch error", errorResponse);
+    }
+  }
+};
 export const GetEvents = async ({
   gameTitle,
   setEvents,
@@ -32,6 +140,7 @@ export const GetEvents = async ({
       setFetchError(errorResponse.status);
     } else {
       setFetchError(null);
+      console.log("fetch null 3");
     }
   }
 };

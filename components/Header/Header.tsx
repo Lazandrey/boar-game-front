@@ -88,7 +88,7 @@ const Header = () => {
               <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <Link onClick={() => logout()} href="">
+              <Link onClick={() => logout()} href="#">
                 Logout
               </Link>
             </li>
