@@ -11,7 +11,7 @@ export type SortGameFileds =
   | "weight"
   | "age";
 
-type InputProps = {
+type GamesInputProps = {
   setSearchTitle: (searchText: string) => void;
   foundGamesQty: number;
   sortField: SortGameFileds;
@@ -20,14 +20,14 @@ type InputProps = {
   setGamesOnPage: (gamesOnPage: number | "All") => void;
 };
 
-const SearchInput = ({
+const GamesSearchInput = ({
   setSearchTitle,
   foundGamesQty,
   sortField,
   setSortField,
   gamesOnPage,
   setGamesOnPage,
-}: InputProps) => {
+}: GamesInputProps) => {
   return (
     <div className={styles.main}>
       <input
@@ -69,4 +69,4 @@ const SearchInput = ({
   );
 };
 
-export default SearchInput;
+export default GamesSearchInput;

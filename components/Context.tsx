@@ -4,7 +4,14 @@ export type UserContextType = {
   isLoggedIn: boolean;
   name?: string;
   email?: string;
-  SetUserContext: (isLoggedIn: boolean, name?: string, email?: string) => void;
+  userId?: string;
+
+  SetUserContext: (
+    isLoggedIn: boolean,
+    name?: string,
+    email?: string,
+    userId?: string
+  ) => void;
 };
 
 export const UserContext = React.createContext<UserContextType | null>(null);

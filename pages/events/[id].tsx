@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -8,7 +8,6 @@ import LoginModal from "@/components/LoginModal/LoginModal";
 import {
   CancelRegistrationToEvent,
   GetEventById,
-  isUserRegisteredtoEvent,
   RegisterToEvent,
 } from "@/utils/fetches";
 import Spinner from "@/components/Spinner/Spinner";
@@ -20,19 +19,18 @@ const Event = () => {
   const userContext = GetUserContext();
   const [event, setEvent] = useState<EventType | null>(null);
   const [fetchError, setFetchError] = useState<number | null>(null);
-  const [fetchResponce, setFetchResponce] = useState<string | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isRegistered, setIsRegistered] = useState("");
   const [addUser, setAddUser] = useState<boolean | null>(null);
   const [isShowAddUserButton, setIsShowAddUserButton] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isShowEditButton, setIsShowEditButton] = useState(false);
 
   useEffect(() => {
     if (id !== undefined && id !== null) {
       if (addUser) {
         RegisterToEvent({
           eventId: id as string,
-          setFetchResponce,
           setFetchError,
           setIsRegistered,
           setIsShowAddUserButton,
@@ -41,7 +39,6 @@ const Event = () => {
         console.log("CancelRegistrationToEvent", id, isRegistered);
         CancelRegistrationToEvent({
           eventId: id as string,
-          setFetchResponce,
           setFetchError,
           setIsRegistered,
           setIsShowAddUserButton,
@@ -59,20 +56,20 @@ const Event = () => {
   }, [addUser]);
 
   useEffect(() => {
-    if (
-      id !== undefined &&
-      id !== null &&
-      isRegistered === "" &&
-      userContext.isLoggedIn
-    ) {
-      // console.log("isUserRegisteredtoEvent", id, isRegistered, userContext);
-      isUserRegisteredtoEvent({
-        eventId: id as string,
-        setIsRegistered,
-        setFetchError,
-        setIsShowAddUserButton,
-      });
-    }
+    // if (
+    //   id !== undefined &&
+    //   id !== null &&
+    //   isRegistered === "" &&
+    //   userContext.isLoggedIn
+    // ) {
+    //   isUserRegisteredtoEvent({
+    //     eventId: id as string,
+    //     setIsRegistered,
+    //     setFetchError,
+    //     setIsShowAddUserButton,
+    //   });
+    //   if
+    // }
 
     if (fetchError) {
       if (fetchError === 400) {
@@ -84,6 +81,9 @@ const Event = () => {
         console.log("fetch null 1");
         userContext.SetUserContext(false);
       }
+    }
+    if (!userContext.isLoggedIn) {
+      setIsShowAddUserButton(true);
     }
   }, [id, fetchError, isRegistered, userContext]);
 
@@ -106,9 +106,32 @@ const Event = () => {
 
   useEffect(() => {
     if (event) {
+      if (event.isCanceled) {
+        router.push("/events/userevents");
+      }
       setIsLoading(false);
-      if (event.accepted_persons_ids.length === event.number_persons) {
+      if (
+        event.accepted_persons_ids.length === event.number_persons &&
+        event.isCanceled === false &&
+        event.date_time > new Date()
+      ) {
         setIsShowAddUserButton(false);
+      }
+
+      if (
+        event.host.id === userContext.userId &&
+        event.isCanceled === false &&
+        new Date(event.date_time) > new Date()
+      ) {
+        setIsShowEditButton(true);
+      }
+
+      if (
+        userContext.userId &&
+        event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
+      ) {
+        console.log("userContext.userId", userContext.userId);
+        setIsRegistered(userContext.userId);
       }
     }
   }, [event]);
@@ -126,6 +149,14 @@ const Event = () => {
       )}
       {event ? (
         <div className={styles.eventWrapper}>
+          {isShowEditButton && (
+            <button
+              className={styles.editBtn}
+              onClick={() => router.push(`/events/edit/${event.id}`)}
+            >
+              Edit event
+            </button>
+          )}
           <h1>Event</h1>
           <h3>{event.game.title}</h3>
           <div className={styles.imageWrapper}>
@@ -159,12 +190,15 @@ const Event = () => {
               <h3 className={styles.playersListLineElement}>Action</h3>
             </div>
             {event.accepted_persons_ids.map((p) => (
-              <div className={styles.playersListLine} key={p.user._id}>
+              <div className={styles.playersListLine} key={p.user.id}>
                 <h3 className={styles.playersListLineElement}>{p.user.name}</h3>
                 <h3 className={styles.playersListLineElement}>
                   {new Date(p.addedAt).toLocaleString("lt-LT")}
                 </h3>
-                {isRegistered === p.user._id ? (
+
+                {isRegistered === p.user.id &&
+                event.isCanceled === false &&
+                new Date(event.date_time) > new Date() ? (
                   <div className={styles.playersListLineElement}>
                     <button
                       className={styles.cancelBtn}
@@ -184,7 +218,6 @@ const Event = () => {
       ) : (
         <Spinner />
       )}
-      ;
     </>
   );
 };

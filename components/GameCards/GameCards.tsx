@@ -1,20 +1,20 @@
 import React from "react";
 import styles from "./styles.module.css";
 import { GameType } from "../../types/game.types";
-import Card from "../Card/Card";
+import GameCard from "../GameCard/GameCard";
 
 type CardProps = {
   games: GameType[];
 };
 
-const Cards = ({ games }: CardProps) => {
+const GameCards = ({ games }: CardProps) => {
   return (
     <div className={styles.main}>
       {games.map((g) => (
-        <Card key={g.id} {...g} />
+        <GameCard key={g.id} game={g} />
       ))}
     </div>
   );
 };
 
-export default Cards;
+export default GameCards;

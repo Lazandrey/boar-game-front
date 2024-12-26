@@ -2,21 +2,24 @@ import React, { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 
-import GameCards from "../../components/GameCards/GameCards";
+import OverlayGameCards from "../../components/OverlayGameCards/OverlayGameCards";
 import GamesSearchInput from "../../components/GamesSearchInput/GamesSearchInput";
 import Spinner from "../../components/Spinner/Spinner";
 import GamesNavigation from "../../components/GamesNavigation/GamesNavigation";
 import LoginModal from "../../components/LoginModal/LoginModal";
 
 import { SortGameFileds } from "../../components/GamesSearchInput/GamesSearchInput";
-import { GameType } from "../../types/game.types";
+import { GamesSearchOverlayProps, GameType } from "../../types/game.types";
 import { GetGames } from "../../utils/fetches";
 import { useRouter } from "next/router";
 import { GetUserContext } from "@/components/Context";
 
 type GamesOnPage = number | "All";
 
-const Main = () => {
+const GamesSearchOverlay = ({
+  setIsOpen,
+  setSelectedGame,
+}: GamesSearchOverlayProps) => {
   const [games, setGames] = useState<GameType[]>([]);
   const [searchTitle, setSearchTitle] = useState("");
   const [sortField, setSortField] = useState<SortGameFileds>("rating");
@@ -46,7 +49,7 @@ const Main = () => {
         (currentPage - 1) * (gamesOnPage === "All" ? 1 : gamesOnPage);
 
       const offset = gamesOnPage === "All" ? 1 : gamesOnPage;
-      console.log("showLoginModal", showLoginModal);
+
       if (!showLoginModal) {
         GetGames({
           gameSearchProps: {
@@ -89,37 +92,47 @@ const Main = () => {
   }, [gamesOnPage, filteredGamesQty]);
 
   return (
-    <div className={styles.main}>
-      <GamesSearchInput
-        setSearchTitle={setSearchTitle}
-        foundGamesQty={filteredGamesQty}
-        sortField={sortField}
-        setSortField={setSortField}
-        gamesOnPage={gamesOnPage}
-        setGamesOnPage={setGamesOnPage}
-      />
-      <GamesNavigation
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-        gamesOnPage={gamesOnPage}
-      />
-      {showLoginModal && (
-        <LoginModal
-          text={"Some text"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
+    <div className={styles.wrapper}>
+      <div className={styles.main}>
+        <GamesSearchInput
+          setSearchTitle={setSearchTitle}
+          foundGamesQty={filteredGamesQty}
+          sortField={sortField}
+          setSortField={setSortField}
+          gamesOnPage={gamesOnPage}
+          setGamesOnPage={setGamesOnPage}
         />
-      )}
-      {games ? <GameCards games={games} /> : <Spinner />}
-      <GamesNavigation
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-        gamesOnPage={gamesOnPage}
-      />
+        <GamesNavigation
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          gamesOnPage={gamesOnPage}
+        />
+        {showLoginModal && (
+          <LoginModal
+            text={"Some text"}
+            isOpen={showLoginModal}
+            setIsOpen={setShowLoginModal}
+          />
+        )}
+        {games ? (
+          <OverlayGameCards
+            games={games}
+            setSelectedGame={setSelectedGame}
+            setIsOpen={setIsOpen}
+          />
+        ) : (
+          <Spinner />
+        )}
+        <GamesNavigation
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          gamesOnPage={gamesOnPage}
+        />
+      </div>
     </div>
   );
 };
 
-export default Main;
+export default GamesSearchOverlay;

@@ -1,4 +1,4 @@
-import { SortGameFileds } from "@/components/SearchInput/SearchInput";
+import { SortGameFileds } from "@/components/GamesSearchInput/GamesSearchInput";
 
 export type GameType = {
   id: string;
@@ -22,6 +22,11 @@ export type GameSearchType = {
   offset: number;
 };
 
+export type GameCardType = {
+  game: GameType;
+  isOverlay?: boolean;
+};
+
 export type GetGamesType = {
   gameSearchProps: GameSearchType;
   setGames: (games: GameType[]) => void;
@@ -34,17 +39,21 @@ export type GetGameType = {
   setGame: (game: GameType) => void;
   setFetchError: (fetchError: number | null) => void;
 };
+export type SaveEventType = {
+  event: EventType;
+  setFetchError: (fetchError: number | null) => void;
+};
 
 export type EventType = {
   id: string;
-  host: { name: string; _id: string };
+  host: { name: string; _id?: string; id: string };
   game: GameType;
   number_persons: number;
   date_time: Date;
   description: string;
   price: number;
   accepted_persons_ids: {
-    user: { name: string; _id: string };
+    user: { name: string; id: string };
     user_id: string;
     addedAt: Date;
   }[];
@@ -57,15 +66,23 @@ export type GetEventType = {
   setEvent: (event: EventType) => void;
   setFetchError: (fetchError: number | null) => void;
 };
+export type UpdateEventType = {
+  id: string;
+  event: EventType;
+  setResponse: (response: number | null) => void;
+  setFetchError: (fetchError: number | null) => void;
+};
 export type GetEventsType = {
-  gameTitle: string;
+  gameTitle?: string;
+  dateTime?: Date;
+  hostId?: string;
+  isCanceled?: boolean;
   setEvents: (events: EventType[]) => void;
   setFetchError: (fetchError: number | null) => void;
 };
 
 export type EventRegisterType = {
   eventId: string;
-  setFetchResponce: (fetchResponce: string | null) => void;
   setFetchError: (fetchError: number | null) => void;
   setIsRegistered: (isRegistered: string) => void;
   setIsShowAddUserButton: (isShowAddUserButton: boolean) => void;
@@ -82,4 +99,9 @@ export type UserType = {
   id: string;
   name: string;
   email: string;
+};
+
+export type GamesSearchOverlayProps = {
+  setIsOpen: (isOpen: boolean) => void;
+  setSelectedGame: (game: GameType | null) => void;
 };

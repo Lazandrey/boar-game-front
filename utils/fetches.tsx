@@ -7,12 +7,13 @@ import {
   GetGamesType,
   GetGameType,
   IsUserRegisteredType,
+  SaveEventType,
+  UpdateEventType,
 } from "@/types/game.types";
 const hostAddress = `http://localhost:3002`;
 
 export const CancelRegistrationToEvent = async ({
   eventId,
-  setFetchResponce,
   setFetchError,
   setIsRegistered,
 }: EventRegisterType) => {
@@ -31,7 +32,6 @@ export const CancelRegistrationToEvent = async ({
     if (response.status === 200) {
       setIsRegistered("");
     }
-    setFetchResponce(response.data.message);
   } catch (error: unknown) {
     const errorResponse = error as AxiosError;
 
@@ -45,7 +45,6 @@ export const CancelRegistrationToEvent = async ({
 
 export const RegisterToEvent = async ({
   eventId,
-  setFetchResponce,
   setFetchError,
   setIsRegistered,
   setIsShowAddUserButton,
@@ -66,8 +65,6 @@ export const RegisterToEvent = async ({
       setIsRegistered(response.data.user._id);
       setIsShowAddUserButton(false);
     }
-
-    setFetchResponce(response.data);
   } catch (error: unknown) {
     const errorResponse = error as AxiosError;
 
@@ -116,8 +113,33 @@ export const isUserRegisteredtoEvent = async ({
     }
   }
 };
+
+export const SaveEvent = async ({ event, setFetchError }: SaveEventType) => {
+  try {
+    const headers = {
+      authorization: cookie.get("authToken"),
+    };
+    const response = await axios.post(`${hostAddress}/event`, event, {
+      headers,
+    });
+    setFetchError(null);
+    return response.data.event;
+  } catch (error: unknown) {
+    console.log(error);
+    const errorResponse = error as AxiosError;
+    if (errorResponse.status !== undefined) {
+      setFetchError(errorResponse.status);
+    } else {
+      setFetchError(null);
+    }
+  }
+};
+
 export const GetEvents = async ({
   gameTitle,
+  dateTime,
+  hostId,
+  isCanceled,
   setEvents,
   setFetchError,
 }: GetEventsType): Promise<void> => {
@@ -125,8 +147,12 @@ export const GetEvents = async ({
     const headers = {
       authorization: cookie.get("authToken"),
     };
+    let startDate;
+    if (dateTime) {
+      startDate = new Date(dateTime).toISOString();
+    }
     const response = await axios.get(
-      `${hostAddress}/event?title=${gameTitle}`,
+      `${hostAddress}/event?title=${gameTitle}&startDate=${startDate}&hostId=${hostId}&isCanceled=${isCanceled}`,
       {
         headers,
       }
@@ -140,7 +166,6 @@ export const GetEvents = async ({
       setFetchError(errorResponse.status);
     } else {
       setFetchError(null);
-      console.log("fetch null 3");
     }
   }
 };
@@ -159,6 +184,34 @@ export const GetEventById = async ({
     });
 
     setEvent(response.data.event);
+    setFetchError(null);
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+
+    if (errorResponse.status !== undefined) {
+      setFetchError(errorResponse.status);
+    } else {
+      setFetchError(null);
+    }
+  }
+};
+
+export const UpdateEventById = async ({
+  id,
+  event,
+  setResponse,
+  setFetchError,
+}: UpdateEventType) => {
+  try {
+    const headers = {
+      authorization: cookie.get("authToken"),
+    };
+    const response = await axios.put(`${hostAddress}/event/${id}`, event, {
+      headers,
+    });
+
+    setResponse(response.status);
+
     setFetchError(null);
   } catch (error: unknown) {
     const errorResponse = error as AxiosError;
@@ -237,6 +290,8 @@ export type UserLoginType = {
   isLoggedIn: boolean;
   email: string;
   username: string;
+  userId: string;
+
   responseStatus: number;
 };
 export const UserLogin = async (
@@ -249,11 +304,14 @@ export const UserLogin = async (
       cookie.set("authToken", response.data.token);
       cookie.set("userEmail", loginData.email);
       cookie.set("userName", response.data.userName);
+      cookie.set("userId", response.data.userId);
 
       return {
         isLoggedIn: true,
         email: loginData.email,
         username: response.data.userName,
+        userId: response.data.userId,
+
         responseStatus: response.status,
       };
     }
@@ -262,6 +320,8 @@ export const UserLogin = async (
       isLoggedIn: false,
       email: loginData.email,
       username: "",
+      userId: "",
+
       responseStatus: response.status,
     };
   } catch (error) {
@@ -270,6 +330,8 @@ export const UserLogin = async (
       isLoggedIn: false,
       email: loginData.email,
       username: "",
+      userId: "",
+
       responseStatus: 500,
     };
   }

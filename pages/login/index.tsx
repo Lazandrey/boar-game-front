@@ -12,10 +12,10 @@ const LoginForm = () => {
   const OnLogin = async () => {
     try {
       const User = await UserLogin({ email, password });
-      console.log(User);
 
       if (User.responseStatus === 200) {
-        userContext.SetUserContext(true, User.username, email);
+        userContext.SetUserContext(true, User.username, email, User.userId);
+
         router.push("/");
       }
     } catch (error) {

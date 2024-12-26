@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./styles.module.css";
 import { EventType } from "../../types/game.types";
 import { useRouter } from "next/router";
+import { GetUserContext } from "../Context";
 
 const Event = (event: EventType) => {
   const date = new Date(event.date_time);
   const router = useRouter();
+  const [isHost, setHost] = useState(false);
+  const [isPlayer, setPlayer] = useState(false);
+
+  const userContext = GetUserContext();
+
+  useEffect(() => {
+    if (event && userContext.userId) {
+      if (event.host.id === userContext.userId) {
+        setHost(true);
+      }
+
+      if (
+        event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
+      ) {
+        setPlayer(true);
+      }
+    }
+
+    console.log("host", isHost, "player", isPlayer);
+  }, [event]);
   return (
     <Link href={`/events/${event.id}`} style={{ textDecoration: "none" }}>
       <div className={styles.main}>

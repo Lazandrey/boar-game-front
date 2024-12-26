@@ -22,7 +22,12 @@ const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
       console.log(User);
 
       if (User.responseStatus === 200) {
-        userContext.SetUserContext(true, User.username, email);
+        userContext.SetUserContext(
+          true,
+          User.username,
+          User.email,
+          User.userId
+        );
 
         setIsOpen(false);
       }

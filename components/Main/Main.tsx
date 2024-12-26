@@ -12,7 +12,11 @@ const Main = () => {
       {!userContext.isLoggedIn ? (
         <h2>Please login</h2>
       ) : (
-        <h2>User name : {userContext.name}</h2>
+        <>
+          <h2>User name : {userContext.name}</h2>
+          <h2>User email : {userContext.email}</h2>
+          <h2>User id : {userContext.userId}</h2>
+        </>
       )}
     </div>
   );

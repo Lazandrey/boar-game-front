@@ -5,11 +5,14 @@ import styles from "./styles.module.css";
 import { GetUserContext } from "@/components/Context";
 import burgerBtn from "../../assets/img/burgerBtn.svg";
 import cookie from "js-cookie";
+import LoginModal from "../LoginModal/LoginModal";
 
 const Header = () => {
   const userContext = GetUserContext();
   const [isBurgerMenuOpen, setBurgerMenuOpen] = useState(false);
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     const token = cookie.get("authToken");
@@ -17,7 +20,8 @@ const Header = () => {
       userContext.SetUserContext(
         true,
         cookie.get("userName")!,
-        cookie.get("userEmail")!
+        cookie.get("userEmail")!,
+        cookie.get("userId")!
       );
     }
   }, []);
@@ -26,6 +30,8 @@ const Header = () => {
     cookie.remove("authToken");
     cookie.remove("userName");
     cookie.remove("userEmail");
+    cookie.remove("userId");
+
     userContext.SetUserContext(false, "", "");
   };
 
@@ -50,52 +56,65 @@ const Header = () => {
   );
 
   return (
-    <header className={styles.header}>
-      <nav className={styles.desktopNav}>{navMenu}</nav>
-      <button
-        className={styles.burgerBtn}
-        onClick={() => setBurgerMenuOpen(!isBurgerMenuOpen)}
-      >
-        <Image src={burgerBtn.src} alt="Burger button" fill={true} />
-      </button>
-      <div
-        className={`${styles.burgerMenuOverlay} ${
-          isBurgerMenuOpen && styles.burgerMenuOverlayOpen
-        }`}
-        onClick={() => setBurgerMenuOpen(false)}
-      >
-        <nav className={styles.mobileNav}>{navMenu}</nav>
-      </div>
-      <div className={styles.user}>
-        {userContext.isLoggedIn ? (
-          <p onClick={() => setUserMenuOpen(!isUserMenuOpen)}>
-            {userContext.name}
-          </p>
-        ) : (
-          <Link href="/login">Login </Link>
-        )}
-        <div
-          className={`${styles.userMenuOverlay} ${
-            isUserMenuOpen && styles.userMenuOverlayOpen
-          }`}
-          onClick={() => setUserMenuOpen(false)}
+    <>
+      <header className={styles.header}>
+        <nav className={styles.desktopNav}>{navMenu}</nav>
+        <button
+          className={styles.burgerBtn}
+          onClick={() => setBurgerMenuOpen(!isBurgerMenuOpen)}
         >
-          <ul>
-            <li>
-              <Link href="/userevents">Your events</Link>
-            </li>
-            <li>
-              <Link href="/profile">Profile</Link>
-            </li>
-            <li>
-              <Link onClick={() => logout()} href="#">
-                Logout
-              </Link>
-            </li>
-          </ul>
+          <Image src={burgerBtn.src} alt="Burger button" fill={true} />
+        </button>
+        <div
+          className={`${styles.burgerMenuOverlay} ${
+            isBurgerMenuOpen && styles.burgerMenuOverlayOpen
+          }`}
+          onClick={() => setBurgerMenuOpen(false)}
+        >
+          <nav className={styles.mobileNav}>{navMenu}</nav>
         </div>
-      </div>
-    </header>
+        <div className={styles.user}>
+          {userContext.isLoggedIn ? (
+            <p onClick={() => setUserMenuOpen(!isUserMenuOpen)}>
+              {userContext.name}
+            </p>
+          ) : (
+            // <Link href="/login">Login </Link>
+            <p onClick={() => setShowLoginModal(true)}>Login</p>
+          )}
+          <div
+            className={`${styles.userMenuOverlay} ${
+              isUserMenuOpen && styles.userMenuOverlayOpen
+            }`}
+            onClick={() => setUserMenuOpen(false)}
+          >
+            <ul>
+              <li>
+                <Link href="/events/userevents">Your events</Link>
+              </li>
+              <li>
+                <Link href="/events/addevent">Add event</Link>
+              </li>
+              <li>
+                <Link href="/profile">Profile</Link>
+              </li>
+              <li>
+                <Link onClick={() => logout()} href="#">
+                  Logout
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      {showLoginModal && (
+        <LoginModal
+          text={"Please login"}
+          isOpen={showLoginModal}
+          setIsOpen={setShowLoginModal}
+        />
+      )}
+    </>
   );
 };
 

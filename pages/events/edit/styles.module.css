@@ -107,3 +107,100 @@
   top: 6rem;
   right: 1rem;
 }
+.gameWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 25rem;
+  gap: 2rem;
+  padding-top: 1rem;
+}
+
+.playerQtySelect {
+  /* height: 3rem; */
+  /* width: 5rem; */
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.playerQtySelect option {
+  font-size: 1rem;
+}
+
+.addressInputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.addressInputWrapper input {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.priceInput {
+  padding: 0.5rem 0.3rem;
+  font-size: 1rem;
+  width: 4rem;
+}
+.dateTimeInput {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  /* width: 10rem; */
+}
+.gameDescriptionInput {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  /* width: 10rem; */
+}
+.hostWillPlayWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.bottomBtnWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.confirmEventButton {
+  width: 10rem;
+  height: 3rem;
+  background-color: var(--color-btn-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.cancelEventButton {
+  width: 10rem;
+  height: 3rem;
+  background-color: var(--color-btn-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.returnEventButton {
+  width: 10rem;
+  height: 3rem;
+  background-color: var(--color-btn-bg);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.error {
+  color: red;
+}
+.buttonWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1rem 0;
+}

@@ -1,30 +1,26 @@
-import React, { forwardRef } from "react";
+import React from "react";
 import styles from "./styles.module.css";
 
 export type ModalProps = {
   text: string;
-  setIsOpen: (state: boolean) => void;
+  isOpen: boolean;
+  onCloseModal: () => void;
+  onConfirm: () => void;
 };
-const Modal = forwardRef<HTMLDialogElement, ModalProps>(
-  ({ text, setIsOpen }, ref) => {
-    const onClose = () => {
-      if (ref && "current" in ref && ref.current) {
-        console.log(ref.current);
-        setIsOpen(false);
-        // ref.current.close();
-      }
-    };
-    return (
-      <dialog className={styles.wrapper} ref={ref}>
-        <h3>Modal</h3>
-        <p>{text}</p>
+const Modal = ({ text, isOpen, onCloseModal, onConfirm }: ModalProps) => {
+  return (
+    <>
+      {isOpen && (
+        <dialog className={styles.wrapper}>
+          <h3>{text}</h3>
+          <div className={styles.buttonWrapper}>
+            <button onClick={onConfirm}>Ok</button>
+            <button onClick={onCloseModal}>Cancel</button>
+          </div>
+        </dialog>
+      )}
+    </>
+  );
+};
 
-        <button autoFocus onClick={onClose}>
-          Close
-        </button>
-      </dialog>
-    );
-  }
-);
-Modal.displayName = "Modal";
 export default Modal;

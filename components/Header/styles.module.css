@@ -45,7 +45,7 @@
 
   background-color: bisque;
   opacity: 0.8;
-  display: flex;
+  display: none;
   justify-content: flex-start;
   align-items: flex-start;
   padding: 0.5rem 2rem;
@@ -71,7 +71,7 @@
   position: fixed;
   top: -100rem;
   right: 1rem;
-
+  z-index: 100;
   background-color: bisque;
   opacity: 0.8;
   display: flex;
@@ -108,5 +108,8 @@
     position: sticky;
     top: 0px;
     z-index: 100;
+  }
+  .burgerMenuOverlay {
+    display: flex;
   }
 }

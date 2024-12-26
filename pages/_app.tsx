@@ -10,11 +10,20 @@ export default function App({ Component, pageProps }: AppProps) {
     isLoggedIn: false,
     name: "",
     email: "",
-    SetUserContext: (isLoggedIn: boolean, name?: string, email?: string) =>
+    userId: "",
+
+    SetUserContext: (
+      isLoggedIn: boolean,
+      name?: string,
+      email?: string,
+      userId?: string
+    ) =>
       setCurrentUser({
         isLoggedIn,
         name,
         email,
+        userId,
+
         SetUserContext: currentUser.SetUserContext,
       }),
   });
@@ -26,6 +35,8 @@ export default function App({ Component, pageProps }: AppProps) {
         isLoggedIn: currentUser.isLoggedIn,
         name: currentUser.name,
         email: currentUser.email,
+        userId: currentUser.userId,
+
         SetUserContext: currentUser.SetUserContext,
       }}
     >
