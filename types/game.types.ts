@@ -59,6 +59,10 @@ export type EventType = {
   }[];
   isCanceled: boolean;
   address: { street: string; city: string; country: string };
+  geolocation: {
+    address: string;
+    location: { longitude: number; latitude: number };
+  };
 };
 
 export type GetEventType = {

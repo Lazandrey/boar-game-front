@@ -45,30 +45,33 @@ const Game = () => {
         />
       )}
       {game ? (
-        <div className={styles.card}>
-          <h1>{game?.title}</h1>
-          <div className={styles.imageWrapper}>
-            <Image
-              src={game?.gameImageUrl}
-              alt={game?.title}
-              fill={true}
-              priority={true}
-            />
+        <div className={styles.main}>
+          <div className={styles.card}>
+            <h1>{game?.title}</h1>
+            <div className={styles.imageWrapper}>
+              <Image
+                src={game?.gameImageUrl}
+                alt={game?.title}
+                fill={true}
+                priority={true}
+              />
+            </div>
+            <div className={styles.gameInfo}>
+              <p>Difficulty: {game.weight}</p>
+              <p>Rating: {game.rating}</p>
+              <p>Rated qty: {game.usersrated}</p>
+              <p>
+                Players: {game.minPlayers} - {game.maxPlayers}
+              </p>
+              <p>
+                Time: {game.minPlayTime} - {game.maxPlayTime}
+              </p>
+              <p>Age: {game.age}</p>
+              <p>Description:</p>
+              <p dangerouslySetInnerHTML={{ __html: game.description }}></p>
+            </div>
+            <BackButton />
           </div>
-          <div className={styles.gameInfo}>
-            <p>Difficulty: {game.weight}</p>
-            <p>Rating: {game.rating}</p>
-            <p>Rated qty: {game.usersrated}</p>
-            <p>
-              Players: {game.minPlayers} - {game.maxPlayers}
-            </p>
-            <p>
-              Time: {game.minPlayTime} - {game.maxPlayTime}
-            </p>
-            <p>Age: {game.age}</p>
-            <p>Description: {game.description}</p>
-          </div>
-          <BackButton />
         </div>
       ) : (
         <Spinner />

@@ -55,37 +55,38 @@ const Event = () => {
     }
   }, [addUser]);
 
-  useEffect(() => {
-    // if (
-    //   id !== undefined &&
-    //   id !== null &&
-    //   isRegistered === "" &&
-    //   userContext.isLoggedIn
-    // ) {
-    //   isUserRegisteredtoEvent({
-    //     eventId: id as string,
-    //     setIsRegistered,
-    //     setFetchError,
-    //     setIsShowAddUserButton,
-    //   });
-    //   if
-    // }
+  // useEffect(() => {
+  //   if (
+  //     id !== undefined &&
+  //     id !== null &&
+  //     isRegistered === "" &&
+  //     userContext.isLoggedIn &&
+  //     event
+  //   ) {
+  //     if (
+  //       userContext.userId &&
+  //       event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
+  //     ) {
+  //       console.log("userContext.userId", userContext.userId);
+  //       setIsRegistered(userContext.userId);
+  //     }
+  //   }
 
-    if (fetchError) {
-      if (fetchError === 400) {
-        setIsRegistered("");
-      }
-      if (fetchError === 401) {
-        setShowLoginModal(true);
-        setFetchError(null);
-        console.log("fetch null 1");
-        userContext.SetUserContext(false);
-      }
-    }
-    if (!userContext.isLoggedIn) {
-      setIsShowAddUserButton(true);
-    }
-  }, [id, fetchError, isRegistered, userContext]);
+  //   if (fetchError) {
+  //     if (fetchError === 400) {
+  //       setIsRegistered("");
+  //     }
+  //     if (fetchError === 401) {
+  //       setShowLoginModal(true);
+  //       setFetchError(null);
+  //       console.log("fetch null 1");
+  //       userContext.SetUserContext(false);
+  //     }
+  //   }
+  //   if (!userContext.isLoggedIn) {
+  //     setIsShowAddUserButton(true);
+  //   }
+  // }, [id, fetchError, isRegistered, userContext]);
 
   useEffect(() => {
     if (id !== undefined && id !== null) {
@@ -106,6 +107,7 @@ const Event = () => {
 
   useEffect(() => {
     if (event) {
+      console.log("event", event);
       if (event.isCanceled) {
         router.push("/events/userevents");
       }
@@ -116,6 +118,7 @@ const Event = () => {
         event.date_time > new Date()
       ) {
         setIsShowAddUserButton(false);
+        console.log("isShowAddUserButton", isShowAddUserButton);
       }
 
       if (
@@ -125,13 +128,19 @@ const Event = () => {
       ) {
         setIsShowEditButton(true);
       }
-
+      console.log(userContext.userId);
+      console.log(
+        event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
+      );
       if (
         userContext.userId &&
         event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
       ) {
         console.log("userContext.userId", userContext.userId);
         setIsRegistered(userContext.userId);
+      } else {
+        setIsRegistered("");
+        setIsShowAddUserButton(true);
       }
     }
   }, [event]);

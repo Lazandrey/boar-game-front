@@ -99,6 +99,10 @@ const AddEvent = () => {
           city: gameAddressCity,
           country: gameAddressCountry,
         },
+        geolocation: {
+          address: "",
+          location: { longitude: 0, latitude: 0 },
+        },
       };
       if (isHostWillPlay) {
         newEvrent.accepted_persons_ids.push({
@@ -123,6 +127,7 @@ const AddEvent = () => {
         }
         setConfirmed(false);
       }
+
       router.push("/events/userevents");
     }
   }, [isConfirmed]);

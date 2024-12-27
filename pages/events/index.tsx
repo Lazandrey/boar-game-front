@@ -19,6 +19,7 @@ const Main = () => {
         GetEvents({
           gameTitle: "",
           dateTime: new Date(),
+          isCanceled: false,
           setEvents,
           setFetchError,
         });
