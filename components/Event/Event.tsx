@@ -51,60 +51,74 @@ const Event = (event: EventType) => {
     }
   }, [event]);
   return (
-    <Link href={`/events/${event.id}`} style={{ textDecoration: "none" }}>
-      <div className={styles.main}>
-        <div className={styles.host}>
-          {isHost && <p>Host</p>}
-          {isPlayer && <p>Player</p>}
-        </div>
-        <div
-          className={styles.gameWrapper}
-          onClick={(e) => {
-            router.push(`/games/${event.game.id}`);
-            e.stopPropagation();
-            e.preventDefault();
-          }}
-        >
-          <h2>Game :{event.game.title}</h2>
-          <div className={styles.imageWrapper}>
-            <Image
-              src={event.game.gameImageUrl}
-              alt={event.game.title}
-              fill={true}
-              sizes="50vw"
-              priority={true}
-            />
-          </div>
-        </div>
-        <h3>Number of players: {event.number_persons}</h3>
-        <h3>Host: {event.host.name}</h3>
-        <h3>Address: {event.address.street}</h3>
-        <h3>City: {event.address.city}</h3>
-        <h3>Country: {event.address.country}</h3>
-        <h3>
-          Distance:{" "}
-          {getDistance(
-            geolocation.latitude,
-            geolocation.longitude,
-            event.geolocation.location.latitude,
-            event.geolocation.location.longitude
-          ).toFixed(2)}{" "}
-          km
-        </h3>
-        <h3>Date: {date.toLocaleDateString("lt-LT")}</h3>
-        <h3>Time: {date.toLocaleTimeString("lt-LT")}</h3>
-        <h3>Description: {event.description}</h3>
-        <h3>Price: {event.price}</h3>
-        <h3
-          className={`${
-            event.number_persons - event.accepted_persons_ids.length <= 0 &&
-            styles.fullPlayerList
-          }`}
-        >
-          Accepted players : {event.accepted_persons_ids.length}
-        </h3>
+    // <Link href={`/events/${event.id}`} style={{ textDecoration: "none" }}>
+    <div
+      className={styles.main}
+      onClick={() => router.push(`/events/${event.id}`)}
+    >
+      <div className={styles.host}>
+        {isHost && <p>Host</p>}
+        {isPlayer && <p>Player</p>}
       </div>
-    </Link>
+      <div
+        className={styles.gameWrapper}
+        onClick={(e) => {
+          router.push(`/games/${event.game.id}`);
+          e.stopPropagation();
+          e.preventDefault();
+        }}
+      >
+        <h2>Game :{event.game.title}</h2>
+        <div className={styles.imageWrapper}>
+          <Image
+            src={event.game.gameImageUrl}
+            alt={event.game.title}
+            fill={true}
+            sizes="50vw"
+            priority={true}
+          />
+        </div>
+      </div>
+      <h3>Number of players: {event.number_persons}</h3>
+      <h3>Host: {event.host.name}</h3>
+      <h3>Address: {event.address.street}</h3>
+      <h3>City: {event.address.city}</h3>
+      <h3>Country: {event.address.country}</h3>
+      <h3>
+        Distance:{" "}
+        {getDistance(
+          geolocation.latitude,
+          geolocation.longitude,
+          event.geolocation.location.latitude,
+          event.geolocation.location.longitude
+        ).toFixed(2)}{" "}
+        km
+      </h3>
+      <Link
+        href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.location.latitude},${event.geolocation.location.longitude}`}
+        target="_blank"
+        className={styles.googleMapsLink}
+        onClick={(e) => {
+          e.stopPropagation();
+          // e.preventDefault();
+        }}
+      >
+        Plan your route on Google Maps
+      </Link>
+      <h3>Date: {date.toLocaleDateString("lt-LT")}</h3>
+      <h3>Time: {date.toLocaleTimeString("lt-LT")}</h3>
+      <h3>Description: {event.description}</h3>
+      <h3>Price: {event.price}</h3>
+      <h3
+        className={`${
+          event.number_persons - event.accepted_persons_ids.length <= 0 &&
+          styles.fullPlayerList
+        }`}
+      >
+        Accepted players : {event.accepted_persons_ids.length}
+      </h3>
+    </div>
+    // </Link>
   );
 };
 

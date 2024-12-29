@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { GetUserContext } from "@/components/Context";
+import useGeolocation from "react-hook-geolocation";
 import { EventType } from "@/types/game.types";
 import LoginModal from "@/components/LoginModal/LoginModal";
 import {
@@ -12,6 +13,7 @@ import {
 } from "@/utils/fetches";
 import Spinner from "@/components/Spinner/Spinner";
 import BackButton from "@/components/BackButton/BackButton";
+import Link from "next/link";
 
 const Event = () => {
   const router = useRouter();
@@ -25,6 +27,29 @@ const Event = () => {
   const [isShowAddUserButton, setIsShowAddUserButton] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isShowEditButton, setIsShowEditButton] = useState(false);
+
+  const geolocation = useGeolocation();
+
+  const getDistance = (
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ) => {
+    const degToRad = (deg: number) => deg * (Math.PI / 180);
+    const R = 6371; // Radius of the earth in km
+    const dLat = degToRad(lat2 - lat1);
+    const dLon = degToRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(degToRad(lat1)) *
+        Math.cos(degToRad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+    return d;
+  };
 
   useEffect(() => {
     if (id !== undefined && id !== null) {
@@ -54,39 +79,6 @@ const Event = () => {
       setIsLoading(false);
     }
   }, [addUser]);
-
-  // useEffect(() => {
-  //   if (
-  //     id !== undefined &&
-  //     id !== null &&
-  //     isRegistered === "" &&
-  //     userContext.isLoggedIn &&
-  //     event
-  //   ) {
-  //     if (
-  //       userContext.userId &&
-  //       event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
-  //     ) {
-  //       console.log("userContext.userId", userContext.userId);
-  //       setIsRegistered(userContext.userId);
-  //     }
-  //   }
-
-  //   if (fetchError) {
-  //     if (fetchError === 400) {
-  //       setIsRegistered("");
-  //     }
-  //     if (fetchError === 401) {
-  //       setShowLoginModal(true);
-  //       setFetchError(null);
-  //       console.log("fetch null 1");
-  //       userContext.SetUserContext(false);
-  //     }
-  //   }
-  //   if (!userContext.isLoggedIn) {
-  //     setIsShowAddUserButton(true);
-  //   }
-  // }, [id, fetchError, isRegistered, userContext]);
 
   useEffect(() => {
     if (id !== undefined && id !== null) {
@@ -150,11 +142,7 @@ const Event = () => {
   return (
     <>
       {showLoginModal && (
-        <LoginModal
-          text={"Please login"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
-        />
+        <LoginModal isOpen={showLoginModal} setIsOpen={setShowLoginModal} />
       )}
       {event ? (
         <div className={styles.eventWrapper}>
@@ -178,7 +166,26 @@ const Event = () => {
           </div>
           <h3>Number of players :{event.number_persons}</h3>
           <h3>Host :{event.host.name}</h3>
-          <h3>Location :{event.address.city}</h3>
+          <h3>Address: {event.address.street}</h3>
+          <h3>City: {event.address.city}</h3>
+          <h3>Country: {event.address.country}</h3>
+          <h3>
+            Distance:{" "}
+            {getDistance(
+              geolocation.latitude,
+              geolocation.longitude,
+              event.geolocation.location.latitude,
+              event.geolocation.location.longitude
+            ).toFixed(2)}{" "}
+            km
+          </h3>
+          <Link
+            className={styles.googleMapsLink}
+            href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.location.latitude},${event.geolocation.location.longitude}`}
+            target="_blank"
+          >
+            Plan your route on Google Maps
+          </Link>
           <h3>Date :{date.toLocaleDateString("lt-LT")}</h3>
           <h3>Time :{date.toLocaleTimeString("lt-LT")}</h3>
           <h3>Description :{event.description}</h3>

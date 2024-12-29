@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 import { GetUserContext } from "../Context";
 import { UserLogin } from "@/utils/fetches";
+import Link from "next/link";
 
 export type ModalProps = {
-  text: string;
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
 };
-const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
+const LoginModal = ({ isOpen, setIsOpen }: ModalProps) => {
   const onClose = () => {
     setIsOpen(false);
   };
@@ -19,7 +19,6 @@ const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
   const OnLogin = async () => {
     try {
       const User = await UserLogin({ email, password });
-      console.log(User);
 
       if (User.responseStatus === 200) {
         userContext.SetUserContext(
@@ -42,9 +41,18 @@ const LoginModal = ({ text, isOpen, setIsOpen }: ModalProps) => {
   return (
     isOpen && (
       <dialog className={styles.wrapper}>
-        <h3>Login</h3>
-        <p>{text}</p>
-        <p>isOpen: {isOpen.toString()}</p>
+        <h3>Please Login</h3>
+        <h4>
+          Do not have an account?{"  "}
+          <Link
+            href="/register"
+            className={styles.registerLink}
+            onClick={onClose}
+          >
+            Register here
+          </Link>{" "}
+        </h4>
+
         <input
           type="email"
           placeholder="Email"

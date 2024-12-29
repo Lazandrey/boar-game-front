@@ -32,6 +32,7 @@ const UserEvents = () => {
           setEvents,
           setFetchError,
         });
+        console.log(userContext.userId);
       }
     }
 

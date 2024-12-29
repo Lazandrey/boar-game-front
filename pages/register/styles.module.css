@@ -1,0 +1,28 @@
+.main {
+  height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}
+.main input {
+  height: 3rem;
+  width: 25rem;
+  font-size: 1.5rem;
+}
+.main button {
+  width: 15rem;
+  height: 3rem;
+  background-color: var(--color-btn-bg);
+  border: none;
+  padding: 0.5rem 2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.errorMessage {
+  color: red;
+}

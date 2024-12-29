@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import { v4 as uuidv4 } from "uuid";
 import styles from "./styles.module.css";
 
@@ -128,7 +129,7 @@ const AddEvent = () => {
         setConfirmed(false);
       }
 
-      router.push("/events/userevents");
+      window.location.href = "/events/userevents";
     }
   }, [isConfirmed]);
 

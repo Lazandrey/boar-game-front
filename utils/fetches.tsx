@@ -285,15 +285,70 @@ export type UserLoginPropsType = {
   email: string;
   password: string;
 };
+export type UserRegisterPropsType = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export type UserLoginType = {
   isLoggedIn: boolean;
   email: string;
   username: string;
   userId: string;
-
+  responseMessage?: string | undefined | unknown;
   responseStatus: number;
 };
+export const UserRegister = async (
+  registerData: UserRegisterPropsType
+): Promise<UserLoginType> => {
+  try {
+    const response = await axios.post(
+      `${hostAddress}/user/signin`,
+      registerData
+    );
+    console.log(response);
+    if (response.status === 201) {
+      cookie.set("authToken", response.data.token);
+      cookie.set("userEmail", registerData.email);
+      cookie.set("userName", response.data.user.name);
+      cookie.set("userId", response.data.user.id);
+
+      return {
+        isLoggedIn: true,
+        email: registerData.email,
+        username: response.data.user.name,
+        userId: response.data.user.id,
+        responseMessage: response.data.message,
+        responseStatus: response.status,
+      };
+    }
+
+    return {
+      isLoggedIn: false,
+      email: registerData.email,
+      username: "",
+      userId: "",
+      responseMessage: response.data.error.message,
+      responseStatus: response.status,
+    };
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+    console.error(errorResponse);
+    return {
+      isLoggedIn: false,
+      email: registerData.email,
+      username: "",
+      userId: "",
+      responseMessage:
+        errorResponse.response?.data &&
+        (errorResponse.response?.data as { error: { message: string } }).error
+          .message,
+      responseStatus: errorResponse.response?.status as number,
+    };
+  }
+};
+
 export const UserLogin = async (
   loginData: UserLoginPropsType
 ): Promise<UserLoginType> => {

@@ -62,3 +62,13 @@
   background-color: var(--color-header-bg);
   padding: 0.1rem 0.5rem;
 }
+.googleMapsLink {
+  text-decoration: none;
+  color: var(--color-btn-bg);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.googleMapsLink:hover {
+  text-decoration: underline;
+}
