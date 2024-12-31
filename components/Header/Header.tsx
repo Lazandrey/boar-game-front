@@ -96,7 +96,7 @@ const Header = () => {
                 <Link href="/events/addevent">Add event</Link>
               </li>
               <li>
-                <Link href="/profile">Profile</Link>
+                <Link href="/user/profile">Profile</Link>
               </li>
               <li>
                 <Link onClick={() => logout()} href="#">
@@ -108,11 +108,7 @@ const Header = () => {
         </div>
       </header>
       {showLoginModal && (
-        <LoginModal
-          text={"Please login"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
-        />
+        <LoginModal isOpen={showLoginModal} setIsOpen={setShowLoginModal} />
       )}
     </>
   );

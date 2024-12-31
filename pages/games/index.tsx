@@ -46,7 +46,7 @@ const Main = () => {
         (currentPage - 1) * (gamesOnPage === "All" ? 1 : gamesOnPage);
 
       const offset = gamesOnPage === "All" ? 1 : gamesOnPage;
-      console.log("showLoginModal", showLoginModal);
+
       if (!showLoginModal) {
         GetGames({
           gameSearchProps: {
@@ -105,11 +105,7 @@ const Main = () => {
         gamesOnPage={gamesOnPage}
       />
       {showLoginModal && (
-        <LoginModal
-          text={"Some text"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
-        />
+        <LoginModal isOpen={showLoginModal} setIsOpen={setShowLoginModal} />
       )}
       {games ? <GameCards games={games} /> : <Spinner />}
       <GamesNavigation

@@ -15,13 +15,7 @@ const About = () => {
       <h2>User name : {userContext.name}</h2>
       <h3>{isOpen.toString()}</h3>
       <button onClick={() => openModal()}>Open Modal</button>
-      {isOpen && (
-        <LoginModal
-          text={"Please login"}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-        />
-      )}
+      {isOpen && <LoginModal isOpen={isOpen} setIsOpen={setIsOpen} />}
     </div>
   );
 };

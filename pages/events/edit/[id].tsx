@@ -242,11 +242,7 @@ const Event = () => {
       )}
 
       {showLoginModal && (
-        <LoginModal
-          text={"Please login"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
-        />
+        <LoginModal isOpen={showLoginModal} setIsOpen={setShowLoginModal} />
       )}
       {event ? (
         <div className={styles.eventWrapper}>

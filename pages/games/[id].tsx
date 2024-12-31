@@ -38,11 +38,7 @@ const Game = () => {
   return (
     <>
       {showLoginModal && (
-        <LoginModal
-          text={"Please login"}
-          isOpen={showLoginModal}
-          setIsOpen={setShowLoginModal}
-        />
+        <LoginModal isOpen={showLoginModal} setIsOpen={setShowLoginModal} />
       )}
       {game ? (
         <div className={styles.main}>

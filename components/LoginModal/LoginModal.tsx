@@ -15,6 +15,7 @@ const LoginModal = ({ isOpen, setIsOpen }: ModalProps) => {
   };
 
   const userContext = GetUserContext();
+  const [errorText, setErrorText] = useState("");
 
   const OnLogin = async () => {
     try {
@@ -29,6 +30,9 @@ const LoginModal = ({ isOpen, setIsOpen }: ModalProps) => {
         );
 
         setIsOpen(false);
+      }
+      if (User.responseStatus === 401) {
+        setErrorText("Invalid email or password");
       }
     } catch (error) {
       console.error(error);
@@ -45,14 +49,14 @@ const LoginModal = ({ isOpen, setIsOpen }: ModalProps) => {
         <h4>
           Do not have an account?{"  "}
           <Link
-            href="/register"
+            href="/user/register"
             className={styles.registerLink}
             onClick={onClose}
           >
             Register here
           </Link>{" "}
         </h4>
-
+        {errorText && <p className={styles.errorMessage}>{errorText}</p>}
         <input
           type="email"
           placeholder="Email"

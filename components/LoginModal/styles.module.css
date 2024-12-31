@@ -39,3 +39,8 @@
   text-decoration: underline;
   color: var(--color-bg);
 }
+.errorMessage {
+  color: red;
+  font-size: 1.5rem;
+  font-weight: 600;
+}

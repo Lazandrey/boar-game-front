@@ -341,9 +341,7 @@ export const UserRegister = async (
       username: "",
       userId: "",
       responseMessage:
-        errorResponse.response?.data &&
-        (errorResponse.response?.data as { error: { message: string } }).error
-          .message,
+        (errorResponse.response?.data as { message: string }).message || "",
       responseStatus: errorResponse.response?.status as number,
     };
   }
@@ -379,15 +377,77 @@ export const UserLogin = async (
 
       responseStatus: response.status,
     };
-  } catch (error) {
-    console.error(error);
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+    console.error(errorResponse);
     return {
       isLoggedIn: false,
       email: loginData.email,
       username: "",
       userId: "",
 
-      responseStatus: 500,
+      responseStatus: errorResponse.response?.status as number,
+    };
+  }
+};
+export type UserUpdatePropsType = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  newPassword: string;
+};
+export const UserUpdate = async (
+  updateData: UserUpdatePropsType
+): Promise<UserLoginType> => {
+  try {
+    const headers = {
+      authorization: cookie.get("authToken"),
+    };
+    const response = await axios.put(
+      `${hostAddress}/user/update/`,
+      updateData,
+      {
+        headers,
+      }
+    );
+    console.log(response);
+    if (response.status === 200) {
+      cookie.set("authToken", response.data.token);
+      cookie.set("userEmail", updateData.email);
+      cookie.set("userName", response.data.userName);
+      cookie.set("userId", response.data.userId);
+
+      return {
+        isLoggedIn: true,
+        email: updateData.email,
+        username: response.data.userName,
+        userId: response.data.userId,
+        responseMessage: response.data.message,
+        responseStatus: response.status,
+      };
+    }
+
+    return {
+      isLoggedIn: false,
+      email: updateData.email,
+      username: "",
+      userId: "",
+      responseMessage: response.data.error.message,
+      responseStatus: response.status,
+    };
+  } catch (error: unknown) {
+    const errorResponse = error as AxiosError;
+
+    return {
+      isLoggedIn: false,
+      email: updateData.email,
+      username: "",
+      userId: "",
+      responseMessage:
+        (errorResponse.response?.data as { message: string }).message || "",
+
+      responseStatus: errorResponse.response?.status as number,
     };
   }
 };

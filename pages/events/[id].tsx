@@ -99,18 +99,18 @@ const Event = () => {
 
   useEffect(() => {
     if (event) {
-      console.log("event", event);
       if (event.isCanceled) {
         router.push("/events/userevents");
       }
       setIsLoading(false);
       if (
-        event.accepted_persons_ids.length === event.number_persons &&
-        event.isCanceled === false &&
-        event.date_time > new Date()
+        event.accepted_persons_ids.length === event.number_persons ||
+        event.isCanceled === true ||
+        event.date_time < new Date()
       ) {
         setIsShowAddUserButton(false);
         console.log("isShowAddUserButton", isShowAddUserButton);
+        return;
       }
 
       if (
@@ -118,21 +118,21 @@ const Event = () => {
         event.isCanceled === false &&
         new Date(event.date_time) > new Date()
       ) {
+        console.log("isShowEditButton", isShowEditButton);
         setIsShowEditButton(true);
+        return;
       }
-      console.log(userContext.userId);
-      console.log(
-        event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
-      );
+
       if (
         userContext.userId &&
         event.accepted_persons_ids.some((p) => p.user.id === userContext.userId)
       ) {
-        console.log("userContext.userId", userContext.userId);
         setIsRegistered(userContext.userId);
       } else {
         setIsRegistered("");
+        console.log("isShowEditButton", isShowEditButton);
         setIsShowAddUserButton(true);
+        return;
       }
     }
   }, [event]);
