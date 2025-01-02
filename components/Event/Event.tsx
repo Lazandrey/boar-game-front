@@ -17,24 +17,38 @@ const Event = (event: EventType) => {
   const geolocation = useGeolocation();
 
   const getDistance = (
-    lat1: number,
     lon1: number,
-    lat2: number,
-    lon2: number
+    lat11: number,
+    lon2: number,
+    lat21: number
   ) => {
-    const degToRad = (deg: number) => deg * (Math.PI / 180);
-    const R = 6371; // Radius of the earth in km
-    const dLat = degToRad(lat2 - lat1);
-    const dLon = degToRad(lon2 - lon1);
+    // const degToRad = (deg: number) => deg * (Math.PI / 180);
+    // // const R = 6371.1; // Radius of the earth in km
+    // const R = 6372.8; // Radius of the earth in km
+    // const dLat = degToRad(lat2 - lat1);
+    // const dLon = degToRad(lon2 - lon1);
+    // const a =
+    //   Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    //   Math.cos(degToRad(lat1)) *
+    //     Math.cos(degToRad(lat2)) *
+    //     Math.sin(dLon / 2) *
+    //     Math.sin(dLon / 2);
+    // const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    // const d = R * c; // Distance in km
+    // return d;
+
+    const radians = (deg: number) => deg * (Math.PI / 180);
+
+    const R = 6378.1; // km
+    const dlat = radians(lat21 - lat11);
+    const dlon = radians(lon2 - lon1);
+    const lat1 = radians(lat11);
+    const lat2 = radians(lat21);
     const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(degToRad(lat1)) *
-        Math.cos(degToRad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const d = R * c; // Distance in km
-    return d;
+      Math.sin(dlat / 2) * Math.sin(dlat / 2) +
+      Math.sin(dlon / 2) * Math.sin(dlon / 2) * Math.cos(lat1) * Math.cos(lat2);
+    const c = 2 * Math.asin(Math.sqrt(a));
+    return R * c;
   };
 
   useEffect(() => {
@@ -50,6 +64,7 @@ const Event = (event: EventType) => {
       }
     }
   }, [event]);
+
   return (
     // <Link href={`/events/${event.id}`} style={{ textDecoration: "none" }}>
     <div
@@ -84,27 +99,31 @@ const Event = (event: EventType) => {
       <h3>Address: {event.address.street}</h3>
       <h3>City: {event.address.city}</h3>
       <h3>Country: {event.address.country}</h3>
-      <h3>
-        Distance:{" "}
-        {getDistance(
-          geolocation.latitude,
-          geolocation.longitude,
-          event.geolocation.location.latitude,
-          event.geolocation.location.longitude
-        ).toFixed(2)}{" "}
-        km
-      </h3>
-      <Link
-        href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.location.latitude},${event.geolocation.location.longitude}`}
-        target="_blank"
-        className={styles.googleMapsLink}
-        onClick={(e) => {
-          e.stopPropagation();
-          // e.preventDefault();
-        }}
-      >
-        Plan your route on Google Maps
-      </Link>
+      {geolocation.accuracy && (
+        <>
+          <h3>
+            Distance:{" "}
+            {getDistance(
+              geolocation.latitude,
+              geolocation.longitude,
+              event.geolocation.coordinates[1],
+              event.geolocation.coordinates[0]
+            ).toFixed(2)}{" "}
+            km
+          </h3>
+          <Link
+            href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.coordinates[1]},${event.geolocation.coordinates[0]}`}
+            target="_blank"
+            className={styles.googleMapsLink}
+            onClick={(e) => {
+              e.stopPropagation();
+              // e.preventDefault();
+            }}
+          >
+            Plan your route on Google Maps
+          </Link>
+        </>
+      )}
       <h3>Date: {date.toLocaleDateString("lt-LT")}</h3>
       <h3>Time: {date.toLocaleTimeString("lt-LT")}</h3>
       <h3>Description: {event.description}</h3>

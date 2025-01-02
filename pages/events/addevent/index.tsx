@@ -101,8 +101,7 @@ const AddEvent = () => {
           country: gameAddressCountry,
         },
         geolocation: {
-          address: "",
-          location: { longitude: 0, latitude: 0 },
+          coordinates: [0, 0],
         },
       };
       if (isHostWillPlay) {

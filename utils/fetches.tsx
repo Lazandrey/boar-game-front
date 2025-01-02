@@ -10,7 +10,9 @@ import {
   SaveEventType,
   UpdateEventType,
 } from "@/types/game.types";
-const hostAddress = `http://localhost:3002`;
+import { env } from "process";
+// const hostAddress = `http://localhost:3002`;
+const hostAddress = env.BASE_URL;
 
 export const CancelRegistrationToEvent = async ({
   eventId,
@@ -142,6 +144,8 @@ export const GetEvents = async ({
   isCanceled,
   setEvents,
   setFetchError,
+  userGeolocation,
+  distance,
 }: GetEventsType): Promise<void> => {
   try {
     const headers = {
@@ -152,7 +156,7 @@ export const GetEvents = async ({
       startDate = new Date(dateTime).toISOString();
     }
     const response = await axios.get(
-      `${hostAddress}/event?title=${gameTitle}&startDate=${startDate}&hostId=${hostId}&isCanceled=${isCanceled}`,
+      `${hostAddress}/event?title=${gameTitle}&startDate=${startDate}&hostId=${hostId}&isCanceled=${isCanceled}&userLongitude=${userGeolocation?.longitude}&userLatitude=${userGeolocation?.latitude}&distance=${distance}`,
       {
         headers,
       }

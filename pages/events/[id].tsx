@@ -130,7 +130,7 @@ const Event = () => {
         setIsRegistered(userContext.userId);
       } else {
         setIsRegistered("");
-        console.log("isShowEditButton", isShowEditButton);
+
         setIsShowAddUserButton(true);
         return;
       }
@@ -174,14 +174,14 @@ const Event = () => {
             {getDistance(
               geolocation.latitude,
               geolocation.longitude,
-              event.geolocation.location.latitude,
-              event.geolocation.location.longitude
+              event.geolocation.coordinates[1],
+              event.geolocation.coordinates[0]
             ).toFixed(2)}{" "}
             km
           </h3>
           <Link
             className={styles.googleMapsLink}
-            href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.location.latitude},${event.geolocation.location.longitude}`}
+            href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.coordinates[1]},${event.geolocation.coordinates[0]}`}
             target="_blank"
           >
             Plan your route on Google Maps
