@@ -109,11 +109,7 @@ const GamesSearchOverlay = ({
           gamesOnPage={gamesOnPage}
         />
         {showLoginModal && (
-          <LoginModal
-            text={"Some text"}
-            isOpen={showLoginModal}
-            setIsOpen={setShowLoginModal}
-          />
+          <LoginModal isOpen={showLoginModal} setIsOpen={setShowLoginModal} />
         )}
         {games ? (
           <OverlayGameCards
