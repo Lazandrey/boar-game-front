@@ -11,8 +11,8 @@ import {
   UpdateEventType,
 } from "@/types/game.types";
 
-// const hostAddress = `http://localhost:3002`;
-const hostAddress = process.env.BASE_URL;
+const hostAddress = `http://localhost:3002`;
+// const hostAddress = process.env.BASE_URL;
 console.log(hostAddress);
 
 export const CancelRegistrationToEvent = async ({

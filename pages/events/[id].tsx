@@ -98,6 +98,18 @@ const Event = () => {
   }, [id, showLoginModal, fetchError, userContext, isRegistered]);
 
   useEffect(() => {
+    if (!userContext.location.lat) {
+      if (geolocation) {
+        userContext.SetUserContext(
+          userContext.isLoggedIn,
+          userContext.name,
+          userContext.email,
+          userContext.userId,
+          geolocation.latitude,
+          geolocation.longitude
+        );
+      }
+    }
     if (event) {
       if (event.isCanceled) {
         router.push("/events/userevents");
@@ -109,7 +121,7 @@ const Event = () => {
         event.date_time < new Date()
       ) {
         setIsShowAddUserButton(false);
-        console.log("isShowAddUserButton", isShowAddUserButton);
+
         return;
       }
 
@@ -118,7 +130,6 @@ const Event = () => {
         event.isCanceled === false &&
         new Date(event.date_time) > new Date()
       ) {
-        console.log("isShowEditButton", isShowEditButton);
         setIsShowEditButton(true);
         return;
       }
@@ -172,8 +183,8 @@ const Event = () => {
           <h3>
             Distance:{" "}
             {getDistance(
-              geolocation.latitude,
-              geolocation.longitude,
+              userContext.location.lat,
+              userContext.location.lng,
               event.geolocation.coordinates[1],
               event.geolocation.coordinates[0]
             ).toFixed(2)}{" "}

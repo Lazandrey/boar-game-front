@@ -7,7 +7,7 @@ import Spinner from "@/components/Spinner/Spinner";
 import Events from "@/components/Events/Events";
 
 const Main = () => {
-  const [events, setEvents] = useState<EventType[]>([]);
+  const [events, setEvents] = useState<EventType[] | null>(null);
   const [fetchError, setFetchError] = useState<number | null>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const userContext = GetUserContext();

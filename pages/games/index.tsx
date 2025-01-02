@@ -17,7 +17,7 @@ import { GetUserContext } from "@/components/Context";
 type GamesOnPage = number | "All";
 
 const Main = () => {
-  const [games, setGames] = useState<GameType[]>([]);
+  const [games, setGames] = useState<GameType[] | null>(null);
   const [searchTitle, setSearchTitle] = useState("");
   const [sortField, setSortField] = useState<SortGameFileds>("rating");
   const [gamesOnPage, setGamesOnPage] = useState<GamesOnPage>(20);

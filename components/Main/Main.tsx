@@ -12,13 +12,25 @@ const Main = () => {
   const userContext = GetUserContext();
   const geolocation = useGeolocation();
 
-  const [events, setEvents] = useState<EventType[]>([]);
+  const [events, setEvents] = useState<EventType[] | null>(null);
   const [fetchError, setFetchError] = useState<number | null>(null);
   const [eventDistancesKm, setEventDistancesKm] = useState<number>(20);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && geolocation.accuracy) {
+    if (!userContext.location.lat) {
+      if (geolocation) {
+        userContext.SetUserContext(
+          userContext.isLoggedIn,
+          userContext.name,
+          userContext.email,
+          userContext.userId,
+          geolocation.latitude,
+          geolocation.longitude
+        );
+      }
+    }
+    if (typeof window !== "undefined" && userContext.location.lat) {
       GetEvents({
         gameTitle: "",
         dateTime: new Date(),
@@ -26,8 +38,8 @@ const Main = () => {
         setEvents,
         setFetchError,
         userGeolocation: {
-          longitude: geolocation?.longitude,
-          latitude: geolocation?.latitude,
+          longitude: userContext.location.lng,
+          latitude: userContext.location.lat,
         },
         distance: eventDistancesKm,
       });

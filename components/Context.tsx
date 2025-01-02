@@ -1,16 +1,19 @@
 import React from "react";
 
 export type UserContextType = {
-  isLoggedIn: boolean;
+  isLoggedIn?: boolean;
   name?: string;
   email?: string;
   userId?: string;
+  location: { lat: number; lng: number };
 
   SetUserContext: (
-    isLoggedIn: boolean,
+    isLoggedIn?: boolean,
     name?: string,
     email?: string,
-    userId?: string
+    userId?: string,
+    lat?: number,
+    lng?: number
   ) => void;
 };
 
