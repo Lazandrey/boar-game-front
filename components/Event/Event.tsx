@@ -109,7 +109,7 @@ const Event = (event: EventType) => {
             km
           </h3>
           <Link
-            href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.coordinates[1]},${event.geolocation.coordinates[0]}`}
+            href={`https://www.google.com/maps/dir/${userContext.location.lat},${userContext.location.lng}/${event.geolocation.coordinates[1]},${event.geolocation.coordinates[0]}`}
             target="_blank"
             className={styles.googleMapsLink}
             onClick={(e) => {

@@ -192,7 +192,7 @@ const Event = () => {
           </h3>
           <Link
             className={styles.googleMapsLink}
-            href={`https://www.google.com/maps/dir/${geolocation.latitude},${geolocation.longitude}/${event.geolocation.coordinates[1]},${event.geolocation.coordinates[0]}`}
+            href={`https://www.google.com/maps/dir/${userContext.location.lat},${userContext.location.lng}/${event.geolocation.coordinates[1]},${event.geolocation.coordinates[0]}`}
             target="_blank"
           >
             Plan your route on Google Maps
